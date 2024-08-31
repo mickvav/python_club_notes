@@ -24,7 +24,6 @@ def get_features(file):
             seq = line[0].split(" ")
             if seq[0] == "##sequence-region":
                 dna_length[seq[1]]=int(seq[3])
-
         else:
             chrom = line[0]
             start = int(line[3])-1
