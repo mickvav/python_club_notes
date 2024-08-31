@@ -28,6 +28,13 @@ class TestLinkedList(unittest.TestCase):
             self.assertEqual(ll.head.data, 2)
             self.assertEqual(ll.head.next.data, 3)
             self.assertEqual(ll.head.next.next.data, 1)
+
+        def test_str(self):
+            ll = LinkedList()
+            ll.add(1)
+            ll.add(2)
+            ll.add(3)
+            self.assertEqual(str(ll), "3 -> 2 -> 1")
             
 if __name__ == '__main__':
     unittest.main()
