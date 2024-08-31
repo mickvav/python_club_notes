@@ -22,7 +22,7 @@ class TestLinkedList(unittest.TestCase):
     
         def test_addtosecond(self):
             ll = LinkedList()
-            ll.add(1)
+            ll.add(1) # 1
             ll.add(2) # 2 -> 1
             ll.addtosecond(3) # 2 -> 3 -> 1
             self.assertEqual(ll.head.data, 2)
