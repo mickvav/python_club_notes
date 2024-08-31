@@ -39,6 +39,7 @@ class LinkedList:
 
 # deletefirst - method to delete first element
     def deletefirst(self):
+        if self.head is None:
         if self.head == None:
             return None
         if self.head:
