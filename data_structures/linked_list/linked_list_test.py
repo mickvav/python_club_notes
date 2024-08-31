@@ -35,6 +35,15 @@ class TestLinkedList(unittest.TestCase):
             ll.add(2)
             ll.add(3)
             self.assertEqual(str(ll), "3 -> 2 -> 1")
-            
+
+        def test_deletefirst(self):
+            ll = LinkedList()
+            ll.add(1)
+            ll.add(2)
+            ll.add(33)
+            ll.deletefirst() # 2 -> 1
+            self.assertEqual(ll.head.data, 2)
+            self.assertEqual(ll.head.next.data, 1)
 if __name__ == '__main__':
     unittest.main()
+        
