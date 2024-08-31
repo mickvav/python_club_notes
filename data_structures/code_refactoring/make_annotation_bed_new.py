@@ -1,6 +1,7 @@
 from sys import argv
 import csv
 from collections import defaultdict, namedtuple
+from typing import List, Tuple
 
 ##sequence-region NZ_CP008708.1 1 8731
 ##sequence-region NZ_CP008709.1 1 1967
@@ -8,10 +9,9 @@ from collections import defaultdict, namedtuple
 #NZ_CP008706.1  Prodigal:002006 CDS 1496    2644    .   +   0   ID=LCHADHJN_00002;inf
 #['NZ_CP008706.1', 'Prodigal:002006', 'CDS', '187619', '187750', '.', '+', '0', 'ID=LCHADHJN_00164;inference=ab initio prediction:Prodigal:002006;locus_tag=LCHADHJN_00164;product=hypothetical protein']
 
-gff = open(argv[1], "r")
-bed = open(argv[1]+".fin.bed", "w")
+Feature = namedtuple("Feature", "chrom start stop ori entry_type locus_tag1 old_locus1 product1 locus_tag2 old_locus2 product2")
+
 def get_features(file):
-    Feature = namedtuple("Feature", "chrom start stop ori entry_type locus_tag1 old_locus1 product1 locus_tag2 old_locus2 product2")
     feature_dict = defaultdict(namedtuple)
     locus_list = []
     dna_length = {}
@@ -25,32 +25,36 @@ def get_features(file):
             if seq[0] == "##sequence-region":
                 dna_length[seq[1]]=int(seq[3])
         else:
-            chrom = line[0]
-            start = int(line[3])-1
-            stop = int(line[4])
-            ori = line[6]
-            descr = line[8].split(";")
-            locus_tag = descr[0].split("=")[1]
-            entry_type = line[2]
-            old_locus = "no"
-            product = "no"
-            if entry_type == "CDS":
-                prod_desc = descr[3].split(" ")
-                if len(prod_desc) > 2:
-                    for i in prod_desc:
-                        if "locus_tag" in i:
-                            old_locus = i.split("%")[1][2:-1]
-                        if "product=" in i:
-                            
-                            product = i.split("=")[1]
-                            if product[0] == "[":
-                                product = product.split("%")[1][2:-1]     
-            cur_feature = Feature(chrom,start, stop, ori, entry_type, locus_tag, old_locus, product, locus_tag, old_locus, product)
+            locus_tag, cur_feature = extractFeature(Feature, line)
             locus_list.append(locus_tag)
             feature_dict[locus_tag] = cur_feature
     return dna_length, feature_dict, locus_list
-def add_intergenic (feature_dict,dict_size, locus_list):
-    Feature = namedtuple("Feature", "chrom start stop ori entry_type locus_tag1 old_locus1 product1 locus_tag2 old_locus2 product2")
+
+def extractFeature(Feature, line : List[str]) -> Tuple[str, any]:
+    chrom = line[0]
+    start = int(line[3])-1
+    stop = int(line[4])
+    ori = line[6]
+    descr = line[8].split(";")
+    locus_tag = descr[0].split("=")[1]
+    entry_type = line[2]
+    old_locus = "no"
+    product = "no"
+    if entry_type == "CDS":
+        prod_desc = descr[3].split(" ")
+        if len(prod_desc) > 2:
+            for i in prod_desc:
+                if "locus_tag" in i:
+                    old_locus = i.split("%")[1][2:-1]
+                if "product=" in i:
+                    product = i.split("=")[1]
+                    if product[0] == "[":
+                        product = product.split("%")[1][2:-1]
+    cur_feature = Feature(chrom,start, stop, ori, entry_type, locus_tag, old_locus, product, locus_tag, old_locus, product)
+    return locus_tag,cur_feature
+
+
+def add_intergenic(feature_dict,dict_size, locus_list):
     feature_dict_inter = defaultdict(namedtuple)
     first_locus = locus_list[0]
     for i in range(len(locus_list)):
@@ -101,13 +105,19 @@ def add_intergenic (feature_dict,dict_size, locus_list):
     return feature_dict_inter
 
 
-size_dict, feat_dict, locus_list = get_features(gff)
+if __name__ == "__main__":
+    if len(argv) != 2:
+        print("Usage: python3 make_annotation_bed.py <annotation.gff>")
+        exit()
+    gff = open(argv[1], "r")
+    bed = open(argv[1]+".fin.bed", "w")
+    size_dict, feat_dict, locus_list = get_features(gff)
 
-writer = csv.writer(bed, delimiter='\t')
-final_dict = add_intergenic(feat_dict,size_dict,locus_list)
+    writer = csv.writer(bed, delimiter='\t')
+    final_dict = add_intergenic(feat_dict,size_dict,locus_list)
 
-writer.writerow(final_dict[locus_list[0]]._fields)  # header
-for feature in final_dict:
-    writer.writerow(final_dict[feature])
+    writer.writerow(final_dict[locus_list[0]]._fields)  # header
+    for feature in final_dict:
+        writer.writerow(final_dict[feature])
     
  
