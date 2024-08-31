@@ -36,4 +36,11 @@ class LinkedList:
        self.head.next = newelement
        newelement.next = secondelement
        return
+   def deletefirst(self):
+        if self.head == None:
+            return None
+        if self.head:
+            deleted_element = self.head
+            self.head = deleted_element.next
+            return deleted_element
 
