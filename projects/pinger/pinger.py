@@ -3,17 +3,11 @@ import sys
 import subprocess
 import re
 
-ip_addresses = []
-with open('ip_list.txt', 'r') as f:
-    for line in f:
-        ip_addresses.append(line.strip())
-    print(ip_addresses)
 
 def ping(ip_address):
     ping_result = subprocess.run(['ping', '-c','4',ip_address],text=True, capture_output=True)
     print(ping_result.stdout)
     return(ping_result.stdout)
-ping_zero = ping(ip_addresses[2])
 
 def parseping(s):
     
@@ -30,4 +24,11 @@ def parseping(s):
     else:
         return('0', 'no ping, check IP')
 
-print(parseping(ping_zero))
+if __name__ == '__main__':
+    ip_addresses = []
+    with open('ip_list.txt', 'r') as f:
+        for line in f:
+            ip_addresses.append(line.strip())
+        print(ip_addresses)
+    ping_zero = ping(ip_addresses[2])
+    print(parseping(ping_zero))
