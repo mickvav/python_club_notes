@@ -26,11 +26,11 @@ def parseping(s):
         return('0', 'no ping, check IP')
 
 if __name__ == '__main__':
-    with open('ip_list.txt', 'r') as f:
+    with open('networks.txt', 'r') as f:
         for line in f:
             ip_addresses.append(line.strip())
         print(ip_addresses)
-    network = ipaddress.ip_network("10.10.10.0/24")
+    network = ipaddress.ip_network("ip_addresses[0]")
     all_ip = list(network.hosts())
     random_ip = random.choice(all_ip)
     print(random_ip)
