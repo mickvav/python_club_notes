@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import subprocess
 import re
+import random
+import ipaddress
 
 
 def ping(ip_address):
-    ping_result = subprocess.run(['ping', '-c','4',ip_address],text=True, capture_output=True)
+    ping_result = subprocess.run(['ping', '-c','4',str(ip_address)],text=True, capture_output=True)
     print(ping_result.stdout)
     return(ping_result.stdout)
 
@@ -25,9 +27,19 @@ def parseping(s):
 
 if __name__ == '__main__':
     ip_addresses = []
-    with open('ip_list.txt', 'r') as f:
+    with open('networks.txt', 'r') as f:
         for line in f:
             ip_addresses.append(line.strip())
         print(ip_addresses)
-    ping_zero = ping(ip_addresses[2])
+    network = ipaddress.ip_network(ip_addresses[0])
+    all_ip = list(network.hosts())
+    random_ip = random.choice(all_ip)
+    print(random_ip)
+
+    #ip_addresses = []
+    #with open('ip_list.txt', 'r') as f:
+    #    for line in f:
+    #        ip_addresses.append(line.strip())
+    #    print(ip_addresses)
+    ping_zero = ping(random_ip)
     print(parseping(ping_zero))
