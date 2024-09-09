@@ -7,10 +7,10 @@ write a program, that takes a file with networks, e.g.:
 192.168.0.0/16
 ```
 
-_randomly_ pings ip addresses from them and saves result summaries in another file, so it looks like
+_randomly_ pings ip several addresses from them and saves result summaries in another file, so it looks like
 
 ```
-pinger input.txt output.txt
+pinger input.txt output.txt 3
 ```
 
 
