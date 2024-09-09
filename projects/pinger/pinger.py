@@ -8,7 +8,7 @@ from multiprocessing import Pool
 
 
 def ping(ip_address):
-    ping_result = subprocess.run(['ping', '-c','1',str(ip_address)],text=True, capture_output=True)
+    ping_result = subprocess.run(['ping', '-c','4',str(ip_address)],text=True, capture_output=True)
     print(ping_result.stdout)
     return(ping_result.stdout)
 
@@ -41,7 +41,6 @@ def randomgeneratorip(networks,limit,file):
         network = ipaddress.ip_network(random_network)
         all_ip = list(network.hosts())
         random_ip = random.choice(all_ip)
-        #print(random_ip)
         random_ips.append(random_ip)
     print(random_ips)
     with Pool(limit) as p:
@@ -50,10 +49,9 @@ def randomgeneratorip(networks,limit,file):
         newvar = parseping(results[i])
         print(parseping(str(results[i])))
         file.write(str(random_ips[i]) +" " + newvar[0] +" " + newvar[1] + "\n" )
-    #return ping_zero
 if __name__ == '__main__':
     ip_addresses = readfile(sys.argv[1])
     with open ('ping_result.txt', 'w') as f:
-        results = randomgeneratorip(ip_addresses, int(sys.argv[2]),f)
+        randomgeneratorip(ip_addresses, int(sys.argv[2]),f)
     
     
