@@ -17,6 +17,9 @@ class TestFindMoreThanValue(unittest.TestCase):
     def test_some_elements_greater_than_value(self):
         self.assertEqual(findmorethanvalue([1, 2, 3, 6, 77], 5), [6, 77])
 
+    def test_some_elements_greater_than_value_with_negative(self):
+        self.assertEqual(findmorethanvalue([1, 2, 3, -6, 77], 5), [77])
+
     def test_some_elements_greater_than_value_with_negative_number(self):
         self.assertEqual(findmorethanvalue([1, 2, 3, 6, 77], -5), [1, 2, 3, 6, 77])
 
