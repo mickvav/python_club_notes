@@ -86,6 +86,37 @@ class ProcessedData:
 		print(self.data)
 		self.result = len(self.data) # ! only example
 
+class ReduceData:
+	"""
+	Use this class to gather some statistics about the data.
+	"""
+	def __init__(self, name):
+		self.name = name
+		self.reduced_data = {} # ! only example
+
+	def process_chunk(self, chunk, chunk_name):
+		"""
+		Process a chunk of data.
+
+		Usage:
+		reducer = ReduceData(name)
+		reducer.process_chunk(chunk, chunk_name)
+		"""
+		# Process the chunk
+		self.reduced_data[chunk_name] = len(chunk) # ! only example
+		pass
+
+	def get_statistics(self):
+		"""
+		Return the statistics.
+
+		Usage:
+		reducer = ReduceData(name)
+		reducer.get_statistics()
+		"""
+		return self.reduced_data
+	
+	
 class Saver:
 	"""
 	Save the processed data.
