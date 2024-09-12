@@ -9,14 +9,14 @@ def findmorethanvalue(list, value):
 
 def checklist(list):
     if len(list) == 0:
-        print ('no element')
+        return ('no element')
     else:
-        print ('i found', list)
+        return ('i found', list)
 
-input_list = list(map(int, input("Insert list (seoarated by comma): ").split(',')))
-value = int(input("Insert value: "))
-filtered_list = findmorethanvalue(input_list, value)
-checklist(filtered_list) 
+if __name__ == '__main__':
+    input_list = list(map(int, input("Insert list (separated by comma): ").split(',')))
+    value = int(input("Insert value: "))
+    filtered_list = findmorethanvalue(input_list, value)
+    print(checklist(filtered_list))
 
 
-#
