@@ -1,0 +1,6 @@
+context: "This is template metadata.yaml file. Use context field to provide details of the particular investigation"
+hypothesis: "Use hypothesis field to provide the hypothesis of the investigation"
+data: "Use data field to provide the description of input data"
+output: "Use output field to provide the description of output data"
+status: "idea|in_progress|completed|published"
+conclusion: "Use conclusion field to provide the conclusion of the investigation"
